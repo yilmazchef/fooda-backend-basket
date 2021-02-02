@@ -1,0 +1,27 @@
+{
+  "externalAddressId": 1,
+  "isBilling": false,
+  "isDelivery": true,
+  "municipality": "Leuven",
+  "postcode": "3001",
+  "title": "home",
+  "user": {
+    "externalUserId": 1,
+    "session": "1",
+    "username": "+32488490509"
+  }
+}
+
+{
+  "externalAddressId": 2,
+  "isBilling": true,
+  "isDelivery": false,
+  "municipality": "Evere",
+  "postcode": "1011",
+  "title": "work",
+  "user": {
+    "externalUserId": 1,
+    "session": "1",
+    "username": "+32488490509"
+  }
+}

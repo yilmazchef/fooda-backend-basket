@@ -1,0 +1,23 @@
+{
+  "description": "best pizza",
+  "externalProductId": 1,
+  "imageUrl": "https://img.static-rmg.be/a/food/image/q75/w640/h400/1077806/pizza.jpg",
+  "ingredients": [
+    {
+      "cost": 0,
+      "externalProductIngredientId": 1
+    }
+  ],
+  "name": "Pizza mix",
+  "price": 10,
+  "quantity": 2,
+  "store": {
+    "externalStoreId": 1,
+    "name": "Pizza Hut"
+  },
+  "user": {
+    "externalUserId": 1,
+    "session": "1",
+    "username": "+32488490509"
+  }
+}

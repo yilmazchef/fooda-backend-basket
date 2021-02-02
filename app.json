@@ -1,0 +1,6 @@
+{
+  "name": "Eureka Basket Backend API",
+  "description": "Basket module.",
+  "website": "https://github.com/yilmazchef/fooda-backend-basket",
+  "success_url": "/"
+}
