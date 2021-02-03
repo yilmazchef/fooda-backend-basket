@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Component
@@ -21,7 +22,7 @@ public class ContactClient {
         contactHome.setId("1");
         contactHome.setCompanyName(null);
         contactHome.setEmail("ahmet.ozdemir@student@intecbrussel.be");
-        contactHome.setExternalContactId(1L);
+        contactHome.setEContactId(UUID.randomUUID());
         contactHome.setFamilyName("Ozdemir");
         contactHome.setFirstName("Ahmet");
         contactHome.setPhone("+32488490509");
@@ -30,7 +31,7 @@ public class ContactClient {
         contactWork.setId("2");
         contactWork.setCompanyName("INTEC");
         contactWork.setEmail("ahmet.ozdemir@student@intecbrussel.be");
-        contactWork.setExternalContactId(2L);
+        contactWork.setEContactId(UUID.randomUUID());
         contactWork.setFamilyName("Ozdemir");
         contactWork.setFirstName("Ahmet");
         contactWork.setPhone("+322345456");

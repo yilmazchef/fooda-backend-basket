@@ -2,19 +2,26 @@ package be.fooda.backend.basket.dao;
 
 import be.fooda.backend.basket.model.entity.OrderEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends MongoRepository<OrderEntity, String> {
 
-    List<OrderEntity> findAllByUser_ExternalUserIdAndUser_Session(Long externalUserId, String session);
+    @Query("{'user.eUserId' : ?0}")
+    List<OrderEntity> findByUser(UUID eUserId);
 
-    Optional<OrderEntity> findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(Long externalUserId, String session, Long externalStoreId);
+    @Query("{'user.eUserId' : ?0}, 'user.session' : ?1}")
+    List<OrderEntity> findByUser(UUID eUserId, String session);
 
-    List<OrderEntity> findAllByUser_ExternalUserIdAndStore_ExternalStoreId(Long externalUserId, Long externalStoreId);
+    @Query("{'eStoreId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
+    Optional<OrderEntity> findByStoreAndUser(UUID eStoreId, UUID eUserId, String session);
 
-    boolean existsByStore_ExternalStoreIdAndUser_ExternalUserIdAndUser_Session(Long externalStoreId, Long externalUserId, String userSession);
+    @Query("{'eStoreId' : ?0}, 'user.eUserId' : ?1}")
+    List<OrderEntity> findByStoreAndUser(UUID eUserId, UUID eStoreId);
+
 }

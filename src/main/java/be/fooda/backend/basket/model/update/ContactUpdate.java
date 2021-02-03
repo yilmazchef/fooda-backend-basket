@@ -1,15 +1,19 @@
 package be.fooda.backend.basket.model.update;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ContactUpdate {
 
     private UserUpdate user;
 
-    private Long externalContactId;
+    private UUID eContactId;
 
     private String title;
 
@@ -26,4 +30,5 @@ public class ContactUpdate {
     private Boolean isDelivery;
 
     private Boolean isBilling;
+
 }

@@ -10,21 +10,28 @@ import be.fooda.backend.basket.model.http.HttpSuccessMessages;
 import be.fooda.backend.basket.service.mapper.*;
 import be.fooda.backend.basket.model.create.PaymentMethodCreate;
 import be.fooda.backend.basket.model.create.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/basket")
+@RequestMapping("/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Api(value = "Basket Service")
 public class BasketController {
 
     // Product DI ..
@@ -68,7 +75,7 @@ public class BasketController {
     }
 
     @GetMapping("product/get_product_by_user_and_external_product_id")
-    public ResponseEntity getProductByUserAndExternalProductId(@RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam Long externalProductId) {
+    public ResponseEntity getProductByUserAndExternalProductId(@RequestParam UUID eUserId, @RequestParam String session, @RequestParam UUID eProductId) {
 
 //        if (!userClient.exists(externalUserId)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMassages.USER_DOES_NOT_EXIST);
@@ -83,7 +90,7 @@ public class BasketController {
 //        }
 
 
-        final Optional<ProductEntity> foundProduct = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId);
+        final Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(eProductId, eUserId, session);
 
         if (!foundProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
@@ -93,7 +100,7 @@ public class BasketController {
     }
 
     @GetMapping("product/get_products_by_user_and_store")
-    public ResponseEntity getProductsByUserAndStore(@RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam(required = false) Long externalStoreId) {
+    public ResponseEntity getProductsByUserAndStore(@RequestParam UUID eUserId, @RequestParam String session, @RequestParam(required = false) UUID eStoreId) {
 
 //        List<FoodaBasketProduct> products;
 //
@@ -117,14 +124,14 @@ public class BasketController {
 //        }
 //        return ResponseEntity.status(HttpStatus.FOUND).body(products);
 
-        List<ProductEntity> foundProducts = new ArrayList<>();
-        if (externalStoreId == null) {
-            foundProducts = productRepository.findAllByUser_ExternalUserIdAndUser_Session(externalUserId, userSession);
+        List<ProductEntity> foundProducts;
+        if (eStoreId == null) {
+            foundProducts = productRepository.findByUser(eUserId, session);
 
             if (foundProducts.isEmpty())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS);
         } else {
-            foundProducts = productRepository.findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(externalUserId, userSession, externalStoreId);
+            foundProducts = productRepository.findByStoreAndUser(eStoreId, eUserId, session);
 
             if (foundProducts.isEmpty())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS_IN_THIS_STORE);
@@ -133,8 +140,12 @@ public class BasketController {
     }
 
 
+    @ApiOperation(value = "Adds product to basket")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "PRODUCT_ADDED")
+    })
     @PostMapping("product/add_product")
-    public ResponseEntity addProduct(@RequestBody ProductCreate productCreate) {
+    public ResponseEntity addProduct(@RequestBody @Valid ProductCreate productCreate) {
 
 //        if (!userClient.exists(product.getUser())){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMassages.USER_DOES_NOT_EXIST);
@@ -156,15 +167,15 @@ public class BasketController {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMassages.PRODUCT_DOES_NOT_EXIST);
 //        }
 
-        final Long externalUserId = productCreate.getUser().getExternalUserId();
+        final UUID eUserId = productCreate.getUser().getEUserId();
         final String userSession = productCreate.getUser().getSession();
-        final Long externalProductId = productCreate.getExternalProductId();
+        final UUID eProductId = productCreate.getEProductId();
 
-        if (externalUserId == null || userSession == null || externalProductId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
-        }
+//        if (eUserId == null || userSession == null || eProductId == null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
+//        }
 
-        if (productRepository.existsByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId)) {
+        if (productRepository.findByProductAndUser(eProductId, eUserId, userSession).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);
         }
 
@@ -175,7 +186,7 @@ public class BasketController {
     }
 
     @PatchMapping("product/update_product_quantity")
-    public ResponseEntity updateProductQuantity(@RequestParam Long externalProductId, @RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam @Positive Integer newQuantity) {
+    public ResponseEntity updateProductQuantity(@RequestParam UUID eProductId, @RequestParam UUID eUserId, @RequestParam String session, @RequestParam @Positive Integer newQuantity) {
 
 //        if (!userClient.exists(externalUserId)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.USER_DOES_NOT_EXIST);
@@ -211,7 +222,7 @@ public class BasketController {
 //            }
 //        }
 
-        Optional<ProductEntity> foundProduct = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId);
+        Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(eProductId, eUserId, session);
 
         if (!foundProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST);
@@ -221,8 +232,7 @@ public class BasketController {
         productBeingUpdated.setQuantity(newQuantity);
         productRepository.save(productBeingUpdated);
 
-        Integer updatedQuantity = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId
-                (externalUserId, userSession, externalProductId).get().getQuantity();
+        Integer updatedQuantity = productRepository.findByProductAndUser(eProductId, eUserId, session).get().getQuantity();
         if (!updatedQuantity.equals(newQuantity)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(HttpFailureMessages.PRODUCT_COULD_NOT_BE_UPDATED);
@@ -231,7 +241,7 @@ public class BasketController {
     }
 
     @PatchMapping("product/update_product_price")
-    public ResponseEntity updateProductPrice(@RequestParam Long externalProductId, @RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam BigDecimal newPrice) {
+    public ResponseEntity updateProductPrice(@RequestParam UUID eProductId, @RequestParam UUID eUserId, @RequestParam String session, @RequestParam BigDecimal newPrice) {
 
 //        if (!userClient.exists(externalUserId)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.USER_DOES_NOT_EXIST);
@@ -259,7 +269,7 @@ public class BasketController {
 //            }
 //        }
 
-        Optional<ProductEntity> foundProduct = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId);
+        Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(eProductId, eUserId, session);
 
         if (!foundProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST);
@@ -270,8 +280,7 @@ public class BasketController {
         productBeingUpdated.setPrice(newPrice);
         productRepository.save(productBeingUpdated);
 
-        BigDecimal updatedPrice = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId
-                (externalUserId, userSession, externalProductId).get().getPrice();
+        BigDecimal updatedPrice = productRepository.findByProductAndUser(eProductId, eUserId, session).get().getPrice();
 
         if (!updatedPrice.equals(newPrice)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -309,7 +318,7 @@ public class BasketController {
     }
 
     @DeleteMapping("product/delete_product_by_user_and_external_product_id")
-    public ResponseEntity deleteProductByUserAndExternalProductId(@RequestParam Long externalProductId, @RequestParam Long externalUserId, @RequestParam String userSession) {
+    public ResponseEntity deleteProductByUserAndExternalProductId(@RequestParam UUID eProductId, @RequestParam UUID eUserId, @RequestParam String session) {
 //        if (!userClient.exists(externalUserId)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.USER_DOES_NOT_EXIST);
 //        }else{
@@ -325,7 +334,7 @@ public class BasketController {
 //        }else{
 
 
-        Optional<ProductEntity> product = productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId);
+        Optional<ProductEntity> product = productRepository.findByProductAndUser(eProductId, eUserId, session);
         if (!product.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
         } else {
@@ -336,7 +345,7 @@ public class BasketController {
 
 
     @DeleteMapping("product/delete_products")
-    public ResponseEntity deleteProducts(@RequestParam(required = false) Long externalStoreId, @RequestParam Long externalUserId, @RequestParam String userSession) {
+    public ResponseEntity deleteProducts(@RequestParam(required = false) UUID eStoreId, @RequestParam UUID eUserId, @RequestParam String session) {
 
         List<ProductEntity> products = new ArrayList<>();
 
@@ -350,8 +359,8 @@ public class BasketController {
 //            }
 //        }
 //
-        if (externalStoreId == null) {
-            products = productRepository.findAllByUser_ExternalUserIdAndUser_Session(externalUserId, userSession);
+        if (eStoreId == null) {
+            products = productRepository.findByUser(eUserId, session);
             if (products.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS);
             }
@@ -359,7 +368,7 @@ public class BasketController {
 //            if (!storeClient.exists(externalStoreId)){
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.STORE_DOES_NOT_EXIST);
 //            }
-            products = productRepository.findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(externalUserId, userSession, externalStoreId);
+            products = productRepository.findByStoreAndUser(eStoreId, eUserId, session);
             if (products.isEmpty())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS_IN_THIS_STORE);
         }
@@ -404,9 +413,9 @@ public class BasketController {
 
 
     @GetMapping("address/get_addresses_by_external_user_id")
-    public ResponseEntity getAddressesByExternalUserId(@RequestParam Long externalUserId) {
+    public ResponseEntity getAddressesByExternalUserId(@RequestParam UUID externalUserId) {
 
-        final List<AddressEntity> foundAddresses = addressRepository.findByUser_ExternalUserId(externalUserId);
+        final List<AddressEntity> foundAddresses = addressRepository.findByUser(externalUserId);
 
         if (foundAddresses.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.USER_HAS_NO_ADDRESS);
@@ -431,15 +440,15 @@ public class BasketController {
 //        return ResponseEntity.status(HttpStatus.CONFLICT).body(FoodaBasketHttpFailureMessages.UNKNOWN_FAILURE);
 
 
-        final Long externalAddressId = addressCreate.getExternalAddressId();
-        final Long externalUserId = addressCreate.getUser().getExternalUserId();
+        final UUID externalAddressId = addressCreate.getEAddressId();
+        final UUID externalUserId = addressCreate.getUser().getEUserId();
         final String userSession = addressCreate.getUser().getSession();
 
         if (externalAddressId == null || externalUserId == null || userSession == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
         }
 
-        if (addressRepository.existsByExternalAddressIdAndUser_ExternalUserIdAndUser_Session(externalAddressId, externalUserId, userSession)) {
+        if (!addressRepository.findByAddressAndUser(externalAddressId, externalUserId, userSession).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.ADDRESS_ALREADY_EXISTS);
         }
 
@@ -462,7 +471,7 @@ public class BasketController {
     }
 
     @DeleteMapping("address/delete_address")
-    public ResponseEntity deleteAddress(@RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam Long externalAddressId) {
+    public ResponseEntity deleteAddress(@RequestParam UUID externalUserId, @RequestParam String userSession, @RequestParam UUID externalAddressId) {
 
 //        if (!userClient.exists(externalUserId)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.USER_DOES_NOT_EXIST);
@@ -473,7 +482,7 @@ public class BasketController {
 //            }
 //        }
 
-        Optional<AddressEntity> address = addressRepository.findByExternalAddressIdAndUser_ExternalUserIdAndUser_Session(externalAddressId, externalUserId, userSession);
+        Optional<AddressEntity> address = addressRepository.findByAddressAndUser(externalAddressId, externalUserId, userSession);
         if (address.isPresent()) {
             addressRepository.deleteById(address.get().getId());
             return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.ADDRESS_DELETED);
@@ -507,9 +516,9 @@ public class BasketController {
     }
 
     @GetMapping("contact/get_contacts_by_external_user_id")
-    public ResponseEntity getContactsByExternalUserId(@RequestParam Long externalUserId) {
+    public ResponseEntity getContactsByExternalUserId(@RequestParam UUID eUserId) {
 
-        final List<ContactEntity> foundContacts = contactRepository.findByUser_ExternalUserId(externalUserId);
+        final List<ContactEntity> foundContacts = contactRepository.findByUser(eUserId);
 
         if (foundContacts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.USER_HAS_NO_CONTACT);
@@ -534,15 +543,15 @@ public class BasketController {
 //        }
 //        return ResponseEntity.status(HttpStatus.CONFLICT).body(FoodaBasketHttpFailureMessages.UNKNOWN_FAILURE);
 
-        final Long externalContactId = contactCreate.getExternalContactId();
-        final Long externalUserId = contactCreate.getUser().getExternalUserId();
-        final String userSession = contactCreate.getUser().getSession();
+        final UUID eContactId = contactCreate.getEContactId();
+        final UUID eUserId = contactCreate.getUser().getEUserId();
+        final String session = contactCreate.getUser().getSession();
 
-        if (externalContactId == null || externalUserId == null || userSession == null) {
+        if (eContactId == null || eUserId == null || session == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
         }
 
-        if (contactRepository.existsByExternalContactIdAndUser_ExternalUserIdAndUser_Session(externalContactId, externalUserId, userSession)) {
+        if (contactRepository.findByContactAndUser(eContactId, eUserId, session).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.CONTACT_ALREADY_EXISTS);
         }
 
@@ -566,18 +575,18 @@ public class BasketController {
     }
 
     @DeleteMapping("contact/delete_contact")
-    public ResponseEntity deleteContact(@RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam Long externalContactId) {
+    public ResponseEntity deleteContact(@RequestParam UUID eUserId, @RequestParam String session, @RequestParam UUID eContactId) {
 
-        if (!userClient.exists(externalUserId)) {
+        if (!userClient.exists(eUserId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_DOES_NOT_EXIST);
         } else {
-            UserEntity user = userClient.getUser(externalUserId);
-            if (!user.getSession().equals(userSession)) {
+            UserEntity user = userClient.getUser(eUserId);
+            if (!user.getSession().equals(session)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.SESSION_DOES_NOT_EXISTS);
             }
         }
 
-        Optional<ContactEntity> contact = contactRepository.findByExternalContactIdAndUser_ExternalUserIdAndUser_Session(externalContactId, externalUserId, userSession);
+        Optional<ContactEntity> contact = contactRepository.findByContactAndUser(eContactId, eUserId, session);
         if (contact.isPresent()) {
             contactRepository.deleteById(contact.get().getId());
             return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.CONTACT_DELETED);
@@ -611,9 +620,9 @@ public class BasketController {
     }
 
     @GetMapping("payment/get_payments_by_external_user_id")
-    public ResponseEntity getPaymentsByExternalUserId(@RequestParam Long externalUserId) {
+    public ResponseEntity getPaymentsByExternalUserId(@RequestParam UUID eUserId) {
 
-        final List<PaymentEntity> foundPayments = paymentRepository.findByUser_ExternalUserId(externalUserId);
+        final List<PaymentEntity> foundPayments = paymentRepository.findByUser(eUserId);
 
         if (foundPayments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.USER_HAS_NO_PAYMENT);
@@ -640,13 +649,13 @@ public class BasketController {
 
         final PaymentMethodCreate paymentMethod = paymentCreate.getMethod();
         final BigDecimal amount = paymentCreate.getAmount();
-        final Long externalUserId = paymentCreate.getUser().getExternalUserId();
+        final UUID externalUserId = paymentCreate.getUser().getEUserId();
         final String userSession = paymentCreate.getUser().getSession();
 
         if (paymentMethod == null || amount == null || externalUserId == null || userSession == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
 
-        if (paymentRepository.existsByMethodAndAmountAndUser_ExternalUserIdAndUser_Session(PaymentMethodEntity.valueOf(paymentMethod.name()), amount, externalUserId, userSession))
+        if (paymentRepository.existsByMethodAndAmountAndUser_EUserIdAndUser_Session(PaymentMethodEntity.valueOf(paymentMethod.name()), amount, externalUserId, userSession))
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PAYMENT_ALREADY_EXISTS);
 
         // CLIENT EXIST CHECKS ..
@@ -690,15 +699,15 @@ public class BasketController {
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.STORE_DOES_NOT_EXIST);
 //            }
 
-            final Long externalUserId = order.getUser().getExternalUserId();
+            final UUID externalUserId = order.getUser().getEUserId();
             final String userSession = order.getUser().getSession();
-            final Long externalStoreId = order.getStore().getExternalStoreId();
+            final UUID externalStoreId = order.getStore().getEStoreId();
 
             if (externalUserId == null || userSession == null || externalStoreId == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.REQUIRED_FIELDS_ARE_MISSING_IN_CREATE_REQUEST);
             }
 
-            if (orderRepository.existsByStore_ExternalStoreIdAndUser_ExternalUserIdAndUser_Session(externalStoreId, externalUserId, userSession)) {
+            if (orderRepository.findByStoreAndUser(externalStoreId, externalUserId, userSession).isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.ORDER_ALREADY_EXISTS);
             }
 
@@ -722,12 +731,12 @@ public class BasketController {
     }
 
     @DeleteMapping("order/delete_orders")
-    public ResponseEntity deleteOrders(@RequestParam(required = false) Long externalStoreId, @RequestParam Long externalUserId, @RequestParam String userSession) {
+    public ResponseEntity deleteOrders(@RequestParam(required = false) UUID eStoreId, @RequestParam UUID eUserId, @RequestParam String session) {
 
         List<OrderEntity> orders = new ArrayList<>();
 
-        if (externalStoreId == null) {
-            orders = orderRepository.findAllByUser_ExternalUserIdAndUser_Session(externalUserId, userSession);
+        if (eStoreId == null) {
+            orders = orderRepository.findByUser(eUserId, session);
             if (orders.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_ORDERS);
             }
@@ -735,7 +744,7 @@ public class BasketController {
 //            if (!storeClient.exists(externalStoreId)){
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaBasketHttpFailureMessages.STORE_DOES_NOT_EXIST);
 //            }
-            orders.add(orderRepository.findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(externalUserId, userSession, externalStoreId).get());
+            orders.add(orderRepository.findByStoreAndUser(eStoreId, eUserId, session).get());
             if (orders.isEmpty())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_ORDER_FROM_THIS_STORE);
         }
@@ -765,16 +774,16 @@ public class BasketController {
     }
 
     @GetMapping("order/get_orders_by_user_and_store")
-    public ResponseEntity getOrdersByUser(@RequestParam Long externalUserId, @RequestParam String userSession, @RequestParam(required = false) Long externalStoreId) {
+    public ResponseEntity getOrdersByUser(@RequestParam UUID eUserId, @RequestParam String session, @RequestParam(required = false) UUID eStoreId) {
 
         List<OrderEntity> foundOrders = new ArrayList<>();
-        if (externalStoreId == null) {
-            foundOrders = orderRepository.findAllByUser_ExternalUserIdAndUser_Session(externalUserId, userSession);
+        if (eStoreId == null) {
+            foundOrders = orderRepository.findByUser(eUserId, session);
 
             if (foundOrders.isEmpty())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_ORDERS);
         } else {
-            Optional<OrderEntity> ofoundOrder = orderRepository.findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(externalUserId, userSession, externalStoreId);
+            Optional<OrderEntity> ofoundOrder = orderRepository.findByStoreAndUser(eStoreId, eUserId, session);
 
             if (!ofoundOrder.isPresent())
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_ORDER_FROM_THIS_STORE);

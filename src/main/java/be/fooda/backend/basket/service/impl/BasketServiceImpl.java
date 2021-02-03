@@ -8,13 +8,15 @@ import be.fooda.backend.basket.model.create.*;
 import be.fooda.backend.basket.model.update.PaymentUpdate;
 import be.fooda.backend.basket.model.update.ProductUpdate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class BasketServiceImpl implements BasketService {
 
@@ -46,18 +48,18 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public List<ProductEntity> getProductsByUser(Long externalUserId, String userSession) {
-        return productRepository.findAllByUser_ExternalUserIdAndUser_Session(externalUserId, userSession);
+    public List<ProductEntity> getProductsByUser(UUID eUserId, String userSession) {
+        return productRepository.findByUser(eUserId, userSession);
     }
 
     @Override
-    public List<ProductEntity> getProductsByUserAndStore(Long externalUserId, String userSession, Long externalStoreId) {
-        return productRepository.findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(externalUserId, userSession, externalStoreId);
+    public List<ProductEntity> getProductsByUserAndStore(UUID eUserId, String session, UUID eStoreId) {
+        return productRepository.findByStoreAndUser(eStoreId, eUserId, session);
     }
 
     @Override
-    public Optional<ProductEntity> getProductByUserAndExternalProductId(Long externalUserId, String userSession, Long externalProductId) {
-        return productRepository.findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(externalUserId, userSession, externalProductId);
+    public Optional<ProductEntity> getProductByUserAndExternalProductId(UUID eUserId, String session, UUID eProductId) {
+        return productRepository.findByProductAndUser(eProductId, eUserId, session);
     }
 
     @Override
@@ -154,8 +156,8 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public Optional<AddressEntity> getAddressByIdAndUser(Long externalUserId, String userSession, Long externalAddressId) {
-        return addressRepository.findByExternalAddressIdAndUser_ExternalUserIdAndUser_Session(externalAddressId, externalUserId, userSession);
+    public Optional<AddressEntity> getAddressByIdAndUser(UUID externalUserId, String userSession, UUID externalAddressId) {
+        return addressRepository.findByAddressAndUser(externalAddressId, externalUserId, userSession);
     }
 
     @Override
@@ -166,8 +168,8 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public Optional<ContactEntity> getContactByIdAndUser(Long externalUserId, String userSession, Long externalContactId) {
-        return contactRepository.findByExternalContactIdAndUser_ExternalUserIdAndUser_Session(externalContactId, externalUserId, userSession);
+    public Optional<ContactEntity> getContactByIdAndUser(UUID eUserId, String session, UUID eContactId) {
+        return contactRepository.findByContactAndUser(eContactId, eUserId, session);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package be.fooda.backend.basket.model.create;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -9,7 +12,7 @@ public class ContactCreate {
 
     private UserCreate user;
 
-    private Long externalContactId;
+    private UUID eContactId;
 
     private String title;
 
@@ -26,4 +29,5 @@ public class ContactCreate {
     private Boolean isDelivery;
 
     private Boolean isBilling;
+
 }

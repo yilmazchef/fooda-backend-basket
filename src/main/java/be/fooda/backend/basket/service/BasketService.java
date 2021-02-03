@@ -1,18 +1,18 @@
 package be.fooda.backend.basket.service;
 
+import be.fooda.backend.basket.model.create.*;
 import be.fooda.backend.basket.model.entity.AddressEntity;
 import be.fooda.backend.basket.model.entity.ContactEntity;
 import be.fooda.backend.basket.model.entity.PaymentEntity;
 import be.fooda.backend.basket.model.entity.ProductEntity;
-import be.fooda.backend.basket.model.create.*;
 import be.fooda.backend.basket.model.update.PaymentUpdate;
 import be.fooda.backend.basket.model.update.ProductUpdate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-@Repository
 public interface BasketService {
     String addProduct(ProductCreate product);
 
@@ -20,11 +20,11 @@ public interface BasketService {
 
     boolean productExists(ProductCreate productCreate);
 
-    List<ProductEntity> getProductsByUser(Long externalUserId, String userSession);
+    List<ProductEntity> getProductsByUser(UUID externalUserId, String userSession);
 
-    List<ProductEntity> getProductsByUserAndStore(Long externalUserId, String userSession, Long externalStoreId);
+    List<ProductEntity> getProductsByUserAndStore(UUID externalUserId, String userSession, UUID externalStoreId);
 
-    Optional<ProductEntity> getProductByUserAndExternalProductId(Long externalUserId, String userSession, Long externalProductId);
+    Optional<ProductEntity> getProductByUserAndExternalProductId(UUID externalUserId, String userSession, UUID externalProductId);
 
     Optional<ProductEntity> updateProduct(String id, ProductUpdate toUpdate);
 
@@ -56,11 +56,11 @@ public interface BasketService {
 
     boolean orderExists(String savedId);
 
-    Optional<AddressEntity> getAddressByIdAndUser(Long externalUserId, String userSession, Long externalAddressId);
+    Optional<AddressEntity> getAddressByIdAndUser(UUID externalUserId, String userSession, UUID externalAddressId);
 
     Optional<AddressEntity> deleteAddress(String id);
 
-    Optional<ContactEntity> getContactByIdAndUser(Long externalUserId, String userSession, Long externalContactId);
+    Optional<ContactEntity> getContactByIdAndUser(UUID externalUserId, String userSession, UUID externalContactId);
 
     Optional<ContactEntity> deleteContact(String id);
 }

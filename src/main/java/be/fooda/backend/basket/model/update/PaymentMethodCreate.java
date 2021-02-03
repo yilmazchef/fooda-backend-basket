@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PaymentMethodUpdate {
+public enum PaymentMethodCreate {
 
     ON_DELIVERY_CASH("Cash on delivery"),
     ON_DELIVERY_CREDIT_CARD("Credit card on delivery"),

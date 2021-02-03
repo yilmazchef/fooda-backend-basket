@@ -2,21 +2,26 @@ package be.fooda.backend.basket.dao;
 
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends MongoRepository<ProductEntity, String> {
 
-    List<ProductEntity> findAllByUser_ExternalUserIdAndUser_Session(Long externalUserId, String session);
+    @Query("{'user.eUserId' : ?0}")
+    List<ProductEntity> findByUser(UUID eUserId);
 
-    List<ProductEntity> findByUser_ExternalUserIdAndUser_SessionAndStore_ExternalStoreId(Long externalUserId, String session, Long externalStoreId);
+    @Query("{'user.eUserId' : ?0}, 'user.session' : ?1}")
+    List<ProductEntity> findByUser(UUID eUserId, String session);
 
-    List<ProductEntity> findAllByUser_ExternalUserIdAndStore_ExternalStoreId(Long externalUserId, Long externalStoreId);
+    @Query("{'eStoreId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
+    List<ProductEntity> findByStoreAndUser(UUID eStoreId, UUID eUserId, String session);
 
-    Optional<ProductEntity> findByUser_ExternalUserIdAndUser_SessionAndExternalProductId(Long externalUserId, String session, Long externalProductId);
+    @Query("{'eProductId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
+    Optional<ProductEntity> findByProductAndUser(UUID eProductId, UUID eUserId, String session);
 
-    boolean existsByUser_ExternalUserIdAndUser_SessionAndExternalProductId(Long externalUserId, String userSession, Long externalProductId);
 }

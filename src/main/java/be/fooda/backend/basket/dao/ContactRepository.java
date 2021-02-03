@@ -2,18 +2,21 @@ package be.fooda.backend.basket.dao;
 
 import be.fooda.backend.basket.model.entity.ContactEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public interface ContactRepository extends MongoRepository<ContactEntity, String> {
 
-    List<ContactEntity> findByUser_ExternalUserId(Long externalUserId);
+    @Query("{'user.eUserId' : ?0}")
+    List<ContactEntity> findByUser(UUID eUserId);
 
-    List<ContactEntity> findAllByUser_ExternalUserIdAndUser_Session(Long externalUserId, String session);
+    @Query("{'user.eUserId' : ?0}, 'user.session' : ?1}")
+    List<ContactEntity> findByUser(UUID eUserId, String session);
 
-    Optional<ContactEntity> findByExternalContactIdAndUser_ExternalUserIdAndUser_Session(Long externalContactId, Long externalUserId, String userSession);
-
-    boolean existsByExternalContactIdAndUser_ExternalUserIdAndUser_Session(Long externalContactId, Long externalUserId, String userSession);
+    @Query("{'eContactId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
+    Optional<ContactEntity> findByContactAndUser(UUID eContactId, UUID eUserId, String session);
 }

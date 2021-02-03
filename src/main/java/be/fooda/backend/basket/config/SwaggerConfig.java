@@ -23,7 +23,9 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .select().apis(RequestHandlerSelectors.basePackage("be.fooda.backend.basket")).paths(PathSelectors.any())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("be.fooda.backend.basket"))
+                .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
                 .securitySchemes(securitySchemes())
@@ -43,7 +45,7 @@ public class SwaggerConfig {
         return SecurityContext
                 .builder()
                 .securityReferences(Arrays.asList(basicAuthReference(), bearerAuthReference()))
-                .forPaths(PathSelectors.ant("/**")).build();
+                .forPaths(PathSelectors.ant("**/create**")).build();
     }
 
     private SecurityReference basicAuthReference() {

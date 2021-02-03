@@ -1,6 +1,7 @@
 package be.fooda.backend.basket.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Document
 public class OrderEntity {
 

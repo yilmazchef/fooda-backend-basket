@@ -5,26 +5,28 @@ import be.fooda.backend.basket.model.create.AddressCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class AddressClient {
-    public List<AddressEntity> getAddresses(Long externalUserId) {
+    public List<AddressEntity> getAddresses(UUID externalUserId) {
         List<AddressEntity> addresses = new ArrayList<>();
 
         AddressEntity addressHome = new AddressEntity();
         AddressEntity addressWork = new AddressEntity();
 
         addressHome.setId("1");
-        addressHome.setExternalAddressId(1L);
+        addressHome.setEAddressId(UUID.randomUUID());
         addressHome.setMunicipality("Leuven");
         addressHome.setPostcode("3000");
         addressHome.setTitle("Home");
 
         addressWork.setId("2");
-        addressWork.setExternalAddressId(2L);
+        addressWork.setEAddressId(UUID.randomUUID());
         addressWork.setMunicipality("Brussel");
         addressWork.setPostcode("1000");
         addressWork.setTitle("Work");
