@@ -31,6 +31,16 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    @GetMapping("all")
+    public ResponseEntity getAll() {
+
+        List<ProductEntity> foundProducts = productRepository.findAll();
+        if (foundProducts.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS_IN_THIS_STORE);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(foundProducts);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity getById(@PathVariable String id) {
 
