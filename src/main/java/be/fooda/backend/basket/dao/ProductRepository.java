@@ -3,12 +3,10 @@ package be.fooda.backend.basket.dao;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface ProductRepository extends MongoRepository<ProductEntity, String> {
 
     @Query("{'user.eUserId' : ?0}")
