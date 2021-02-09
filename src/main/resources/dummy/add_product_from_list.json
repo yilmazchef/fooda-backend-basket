@@ -1,0 +1,71 @@
+[
+  {
+    "description": "best pizza",
+    "eproductId": "313c3849-1702-47d5-a6e6-129973a653f8",
+    "imageUrl": "https://img.static-rmg.be/a/food/image/q75/w640/h400/1077806/pizza.jpg",
+    "ingredients": [
+      {
+        "cost": 0,
+        "eingredientId": "b5c3d131-8142-4e93-97dc-7ed2a645af6d"
+      }
+    ],
+    "name": "Pizza mix",
+    "price": 10,
+    "quantity": 2,
+    "store": {
+      "estoreId": "cde609c4-48a7-47d5-a338-a67ffdc26b79",
+      "name": "Pizza Hut"
+    },
+    "user": {
+      "euserId": "10664fe5-981a-461d-a505-2b3e39fb4865",
+      "session": "123aze",
+      "username": "0032488490509"
+    }
+  },
+  {
+    "description": "worst burger in the world",
+    "eproductId": "35b57022-b0da-415a-86db-54c3663bf678",
+    "imageUrl": "https://i.kym-cdn.com/photos/images/newsfeed/000/607/590/c6d.gif",
+    "ingredients": [
+      {
+        "cost": 2.50,
+        "eingredientId": "92d7038c-0b3c-449c-8176-503e5dd7db33"
+      }
+    ],
+    "name": "Pizza mix",
+    "price": 9.90,
+    "quantity": 5,
+    "store": {
+      "estoreId": "3dd57658-472d-437a-8b0d-561ae3bae95f",
+      "name": "Trump Burger"
+    },
+    "user": {
+      "euserId": "10664fe5-981a-461d-a505-2b3e39fb4865",
+      "session": "123aze",
+      "username": "0032488490509"
+    }
+  },
+  {
+    "description": "tasty for dummy youtubers",
+    "eproductId": "edf3bda2-c80d-47f1-a493-868c82ba4092",
+    "imageUrl": "https://img.delicious.com.au/bMm1SsuG/del/2015/11/solid-gold-burger-23751-3.jpg",
+    "ingredients": [
+      {
+        "cost": 500,
+        "eingredientId": "aa5211a2-d2b2-4d1e-83f1-ac8e9b33d8f8"
+      }
+    ],
+    "name": "Gold plated burger",
+    "price": 2000,
+    "quantity": 1,
+    "store": {
+      "estoreId": "3dd57658-472d-437a-8b0d-561ae3bae95f",
+      "name": "Trump Burger"
+    },
+    "user": {
+      "euserId": "10664fe5-981a-461d-a505-2b3e39fb4865",
+      "session": "123aze",
+      "username": "0032488490509"
+    }
+  }
+]

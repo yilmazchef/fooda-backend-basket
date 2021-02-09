@@ -1,7 +1,6 @@
 package be.fooda.backend.basket.model.create;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
