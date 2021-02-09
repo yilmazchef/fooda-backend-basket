@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class IngredientUpdate {
 
-    private UUID eIngredientId;
+    private String eIngredientId;
 
     private BigDecimal cost;
 }

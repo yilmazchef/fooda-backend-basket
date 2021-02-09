@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class IngredientCreate {
 
-    private UUID eIngredientId;
+    private String eIngredientId;
 
     private BigDecimal cost;
 }

@@ -19,7 +19,7 @@ public class AddressEntity {
 
     private UserEntity user;
 
-    private UUID eAddressId;
+    private String eAddressId;
 
     private String title;
 

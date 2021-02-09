@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +11,7 @@ public class ContactUpdate {
 
     private UserUpdate user;
 
-    private UUID eContactId;
+    private String eContactId;
 
     private String title;
 

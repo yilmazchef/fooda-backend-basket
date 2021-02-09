@@ -22,7 +22,7 @@ public class ContactClient {
         contactHome.setId("1");
         contactHome.setCompanyName(null);
         contactHome.setEmail("ahmet.ozdemir@student@intecbrussel.be");
-        contactHome.setEContactId(UUID.randomUUID());
+        contactHome.setEContactId(UUID.randomUUID().toString());
         contactHome.setFamilyName("Ozdemir");
         contactHome.setFirstName("Ahmet");
         contactHome.setPhone("+32488490509");
@@ -31,7 +31,7 @@ public class ContactClient {
         contactWork.setId("2");
         contactWork.setCompanyName("INTEC");
         contactWork.setEmail("ahmet.ozdemir@student@intecbrussel.be");
-        contactWork.setEContactId(UUID.randomUUID());
+        contactWork.setEContactId(UUID.randomUUID().toString());
         contactWork.setFamilyName("Ozdemir");
         contactWork.setFirstName("Ahmet");
         contactWork.setPhone("+322345456");

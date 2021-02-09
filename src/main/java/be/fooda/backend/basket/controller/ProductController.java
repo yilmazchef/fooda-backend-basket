@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
@@ -52,7 +51,7 @@ public class ProductController {
     }
 
     @GetMapping("user/{eUserId}/session/{session}/eProductId/{eProductId}")
-    public ResponseEntity getByUserAndExternalProductId(@PathVariable UUID eUserId, @PathVariable String session, @PathVariable UUID eProductId) {
+    public ResponseEntity getByUserAndExternalProductId(@PathVariable String eUserId, @PathVariable String session, @PathVariable String eProductId) {
 
         final Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(eProductId, eUserId, session);
         if (!foundProduct.isPresent())
@@ -62,7 +61,7 @@ public class ProductController {
     }
 
     @GetMapping("user/{eUserId}/session/{session}/store/{eStoreId}/")
-    public ResponseEntity getByUserAndStore(@PathVariable UUID eUserId, @PathVariable String session, @PathVariable UUID eStoreId) {
+    public ResponseEntity getByUserAndStore(@PathVariable String eUserId, @PathVariable String session, @PathVariable String eStoreId) {
 
         List<ProductEntity> foundProducts = productRepository.findByStoreAndUser(eStoreId, eUserId, session);
         if (foundProducts.isEmpty())
@@ -73,7 +72,7 @@ public class ProductController {
 
 
     @GetMapping("user/{eUserId}/session/{session}")
-    public ResponseEntity getByUser(@PathVariable UUID eUserId, @PathVariable String session) {
+    public ResponseEntity getByUser(@PathVariable String eUserId, @PathVariable String session) {
 
         List<ProductEntity> foundProducts = productRepository.findByUser(eUserId, session);
         if (foundProducts.isEmpty())
@@ -85,9 +84,9 @@ public class ProductController {
     @PostMapping
     public ResponseEntity createProduct(@RequestBody @Valid ProductCreate productCreate) {
 
-        final UUID eUserId = productCreate.getUser().getEUserId();
+        final String eUserId = productCreate.getUser().getEUserId();
         final String userSession = productCreate.getUser().getSession();
-        final UUID eProductId = productCreate.getEProductId();
+        final String eProductId = productCreate.getEProductId();
         if (productRepository.findByProductAndUser(eProductId, eUserId, userSession).isPresent())
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);
 
@@ -101,9 +100,9 @@ public class ProductController {
         List<ResponseEntity> responseEntityList = new ArrayList<>();
 
         for (ProductCreate productCreate : productCreateList) {
-            final UUID eUserId = productCreate.getUser().getEUserId();
+            final String eUserId = productCreate.getUser().getEUserId();
             final String userSession = productCreate.getUser().getSession();
-            final UUID eProductId = productCreate.getEProductId();
+            final String eProductId = productCreate.getEProductId();
             if (productRepository.findByProductAndUser(eProductId, eUserId, userSession).isPresent())
                 responseEntityList.add(ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS));
 

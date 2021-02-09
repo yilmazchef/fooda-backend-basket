@@ -12,7 +12,7 @@ public class ContactCreate {
 
     private UserCreate user;
 
-    private UUID eContactId;
+    private String eContactId;
 
     private String title;
 

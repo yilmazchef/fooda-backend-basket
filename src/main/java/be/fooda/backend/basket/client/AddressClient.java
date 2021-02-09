@@ -20,13 +20,13 @@ public class AddressClient {
         AddressEntity addressWork = new AddressEntity();
 
         addressHome.setId("1");
-        addressHome.setEAddressId(UUID.randomUUID());
+        addressHome.setEAddressId(UUID.randomUUID().toString());
         addressHome.setMunicipality("Leuven");
         addressHome.setPostcode("3000");
         addressHome.setTitle("Home");
 
         addressWork.setId("2");
-        addressWork.setEAddressId(UUID.randomUUID());
+        addressWork.setEAddressId(UUID.randomUUID().toString());
         addressWork.setMunicipality("Brussel");
         addressWork.setPostcode("1000");
         addressWork.setTitle("Work");

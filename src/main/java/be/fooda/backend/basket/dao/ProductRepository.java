@@ -7,21 +7,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends MongoRepository<ProductEntity, String> {
 
     @Query("{'user.eUserId' : ?0}")
-    List<ProductEntity> findByUser(UUID eUserId);
+    List<ProductEntity> findByUser(String eUserId);
 
     @Query("{'user.eUserId' : ?0}, 'user.session' : ?1}")
-    List<ProductEntity> findByUser(UUID eUserId, String session);
+    List<ProductEntity> findByUser(String eUserId, String session);
 
     @Query("{'eStoreId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
-    List<ProductEntity> findByStoreAndUser(UUID eStoreId, UUID eUserId, String session);
+    List<ProductEntity> findByStoreAndUser(String eStoreId, String eUserId, String session);
 
     @Query("{'eProductId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
-    Optional<ProductEntity> findByProductAndUser(UUID eProductId, UUID eUserId, String session);
+    Optional<ProductEntity> findByProductAndUser(String eProductId, String eUserId, String session);
 
 }

@@ -13,7 +13,7 @@ public class AddressUpdate {
 
     private UserUpdate user;
 
-    private UUID eAddressId;
+    private String eAddressId;
 
     private String title;
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StoreCreate {
 
-    private UUID eStoreId;
+    private String eStoreId;
 
     private String name;
 }

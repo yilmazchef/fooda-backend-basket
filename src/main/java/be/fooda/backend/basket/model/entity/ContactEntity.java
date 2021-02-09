@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class ContactEntity {
 
     private UserEntity user;
 
-    private UUID eContactId;
+    private String eContactId;
 
     private String title;
 

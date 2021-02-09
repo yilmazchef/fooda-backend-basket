@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDeleteRequest {
-    private UUID eProductId;
-    private UUID eUserId;
+    private String eProductId;
+    private String eUserId;
     private String session;
 }

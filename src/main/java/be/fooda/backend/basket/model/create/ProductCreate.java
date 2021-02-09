@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductCreate {
 
-    private UUID eProductId;
+    private String eProductId;
 
     private UserCreate user;
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProductUpdate {
 
-    private UUID eProductId;
+    private String eProductId;
 
     private UserUpdate user;
 

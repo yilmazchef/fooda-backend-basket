@@ -12,7 +12,7 @@ public class AddressCreate {
 
     private UserCreate user;
 
-    private UUID eAddressId;
+    private String eAddressId;
 
     private String title;
 
