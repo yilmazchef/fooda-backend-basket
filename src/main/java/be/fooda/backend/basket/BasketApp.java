@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication
 //@EnableEurekaClient
-@EnableMongoRepositories("be.fooda.backend.basket.dao")
 public class BasketApp {
     public static void main(String[] args) {
         SpringApplication.run(BasketApp.class, args);
