@@ -1,13 +1,10 @@
 package be.fooda.backend.basket.controller;
 
 import be.fooda.backend.basket.dao.ProductRepository;
-import be.fooda.backend.basket.model.create.ProductCreate;
-import be.fooda.backend.basket.model.delete.ProductDeleteRequest;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.http.HttpFailureMessages;
 import be.fooda.backend.basket.model.http.HttpSuccessMessages;
-import be.fooda.backend.basket.model.update.ProductPriceUpdateRequest;
-import be.fooda.backend.basket.model.update.ProductQuantityUpdateRequest;
+import be.fooda.backend.basket.model.request.CreateProductRequest;
 import be.fooda.backend.basket.service.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +79,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody @Valid ProductCreate productCreate) {
+    public ResponseEntity createProduct(@RequestBody @Valid CreateProductRequest productCreate) {
 
         final String eUserId = productCreate.getUser().getEUserId();
         final String userSession = productCreate.getUser().getSession();
@@ -95,11 +92,11 @@ public class ProductController {
     }
 
     @PostMapping("many")
-    public List<ResponseEntity> createProductFromList(@RequestBody @Valid List<ProductCreate> productCreateList) {
+    public List<ResponseEntity> createProductFromList(@RequestBody @Valid List<CreateProductRequest> productCreateList) {
 
         List<ResponseEntity> responseEntityList = new ArrayList<>();
 
-        for (ProductCreate productCreate : productCreateList) {
+        for (CreateProductRequest productCreate : productCreateList) {
             final String eUserId = productCreate.getUser().getEUserId();
             final String userSession = productCreate.getUser().getSession();
             final String eProductId = productCreate.getEProductId();
@@ -113,7 +110,7 @@ public class ProductController {
         return responseEntityList;
     }
 
-    @PatchMapping("quantity")
+   /* @PatchMapping("quantity")
     public ResponseEntity updateProductQuantity(@RequestBody @Valid ProductQuantityUpdateRequest request) {
 
         Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(request.getEProductId(), request.getEUserId(), request.getSession());
@@ -148,7 +145,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.PRODUCT_COULD_NOT_BE_UPDATED);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(HttpSuccessMessages.PRODUCT_UPDATED);
-    }
+    }*/
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteProductById(@PathVariable String id) {
@@ -161,7 +158,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.PRODUCT_DELETED);
     }
 
-    @DeleteMapping
+   /* @DeleteMapping
     public ResponseEntity deleteProductByUserAndExternalProductId(@RequestBody @Valid ProductDeleteRequest request) {
 
         Optional<ProductEntity> product = productRepository.findByProductAndUser(request.getEProductId(), request.getEUserId(), request.getSession());
@@ -170,7 +167,7 @@ public class ProductController {
 
         productRepository.deleteById(product.get().getId());
         return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.PRODUCT_DELETED);
-    }
+    }*/
 
     @GetMapping("exists/{id}")
     public ResponseEntity productExistsById(@PathVariable String id) {

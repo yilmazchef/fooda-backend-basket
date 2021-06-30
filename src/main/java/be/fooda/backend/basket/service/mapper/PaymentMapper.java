@@ -2,6 +2,8 @@ package be.fooda.backend.basket.service.mapper;
 
 import be.fooda.backend.basket.model.entity.PaymentEntity;
 import be.fooda.backend.basket.model.create.PaymentCreate;
+import be.fooda.backend.basket.model.request.CreatePaymentRequest;
+import be.fooda.backend.basket.model.request.UpdatePaymentRequest;
 import be.fooda.backend.basket.model.update.PaymentUpdate;
 import org.mapstruct.*;
 
@@ -12,13 +14,13 @@ import org.mapstruct.*;
 )
 public interface PaymentMapper {
 
-    PaymentEntity toEntity(PaymentCreate from);
+    PaymentEntity toEntity(CreatePaymentRequest from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    PaymentEntity toEntity(PaymentUpdate from, @MappingTarget PaymentEntity to);
+    PaymentEntity toEntity(UpdatePaymentRequest from, @MappingTarget PaymentEntity to);
 
-    PaymentCreate toCreate(PaymentEntity from);
+    CreatePaymentRequest toCreate(PaymentEntity from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    PaymentUpdate toUpdate(PaymentEntity from, @MappingTarget PaymentUpdate to);
+    UpdatePaymentRequest toUpdate(PaymentEntity from, @MappingTarget UpdatePaymentRequest to);
 }

@@ -1,8 +1,8 @@
 package be.fooda.backend.basket.service.mapper;
 
 import be.fooda.backend.basket.model.entity.ContactEntity;
-import be.fooda.backend.basket.model.create.ContactCreate;
-import be.fooda.backend.basket.model.update.ContactUpdate;
+import be.fooda.backend.basket.model.request.CreateContactRequest;
+import be.fooda.backend.basket.model.request.UpdateContactRequest;
 import org.mapstruct.*;
 
 @Mapper(
@@ -12,14 +12,14 @@ import org.mapstruct.*;
 )
 public interface ContactMapper {
 
-    ContactEntity toEntity(ContactCreate from);
+    ContactEntity toEntity(CreateContactRequest from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    ContactEntity toEntity(ContactUpdate from, @MappingTarget ContactEntity to);
+    ContactEntity toEntity(UpdateContactRequest from, @MappingTarget ContactEntity to);
 
-    ContactCreate toCreate(ContactEntity from);
+    CreateContactRequest toCreate(ContactEntity from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    ContactUpdate toUpdate(ContactEntity from, @MappingTarget ContactUpdate to);
+    UpdateContactRequest toUpdate(ContactEntity from, @MappingTarget UpdateContactRequest to);
 
 }

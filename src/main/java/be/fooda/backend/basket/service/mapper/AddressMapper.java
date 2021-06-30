@@ -1,8 +1,8 @@
 package be.fooda.backend.basket.service.mapper;
 
 import be.fooda.backend.basket.model.entity.AddressEntity;
-import be.fooda.backend.basket.model.create.AddressCreate;
-import be.fooda.backend.basket.model.update.AddressUpdate;
+import be.fooda.backend.basket.model.request.CreateAddressRequest;
+import be.fooda.backend.basket.model.request.UpdateAddressRequest;
 import org.mapstruct.*;
 
 @Mapper(
@@ -12,14 +12,14 @@ import org.mapstruct.*;
 )
 public interface AddressMapper {
 
-    AddressEntity toEntity(AddressCreate from);
+    AddressEntity toEntity(CreateAddressRequest from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    AddressEntity toEntity(AddressUpdate from, @MappingTarget AddressEntity to);
+    AddressEntity toEntity(UpdateAddressRequest from, @MappingTarget AddressEntity to);
 
-    AddressCreate toCreate(AddressEntity from);
+    CreateAddressRequest toCreate(AddressEntity from);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    AddressUpdate toUpdate(AddressEntity from, @MappingTarget AddressUpdate to);
+    UpdateAddressRequest toUpdate(AddressEntity from, @MappingTarget UpdateAddressRequest to);
 
 }
