@@ -1,11 +1,10 @@
 package be.fooda.backend.basket.controller;
 
-import be.fooda.backend.basket.dao.ProductRepository;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.http.HttpFailureMessages;
 import be.fooda.backend.basket.model.http.HttpSuccessMessages;
 import be.fooda.backend.basket.model.request.CreateProductRequest;
-import be.fooda.backend.basket.mapper.ProductMapper;
+import be.fooda.backend.basket.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +22,13 @@ import java.util.Optional;
 public class ProductController {
 
     // Product DI ..
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
+    private final ProductService productService;
+
 
     @GetMapping("all")
     public ResponseEntity getAll() {
 
-        List<ProductEntity> foundProducts = productRepository.findAll();
+        List<ProductEntity> foundProducts = productService.findAll();
         if (foundProducts.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS_IN_THIS_STORE);
 
@@ -39,7 +38,7 @@ public class ProductController {
     @GetMapping("{id}")
     public ResponseEntity getById(@PathVariable String id) {
 
-        final Optional<ProductEntity> foundProduct = productRepository.findById(id);
+        final Optional<ProductEntity> foundProduct = productService.findById(id);
         if (!foundProduct.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
 
@@ -49,7 +48,7 @@ public class ProductController {
     @GetMapping("user/{eUserId}/session/{session}/eProductId/{eProductId}")
     public ResponseEntity getByUserAndExternalProductId(@PathVariable String eUserId, @PathVariable String session, @PathVariable String eProductId) {
 
-        final Optional<ProductEntity> foundProduct = productRepository.findByProductAndUser(eProductId, eUserId, session);
+        final Optional<ProductEntity> foundProduct = productService.findByProductAndUser(eProductId, eUserId, session);
         if (!foundProduct.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
 
@@ -59,7 +58,7 @@ public class ProductController {
     @GetMapping("user/{eUserId}/session/{session}/store/{eStoreId}/")
     public ResponseEntity getByUserAndStore(@PathVariable String eUserId, @PathVariable String session, @PathVariable String eStoreId) {
 
-        List<ProductEntity> foundProducts = productRepository.findByStoreAndUser(eStoreId, eUserId, session);
+        List<ProductEntity> foundProducts = productService.findByStoreAndUser(eStoreId, eUserId, session);
         if (foundProducts.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS_IN_THIS_STORE);
 
@@ -70,7 +69,7 @@ public class ProductController {
     @GetMapping("user/{eUserId}/session/{session}")
     public ResponseEntity getByUser(@PathVariable String eUserId, @PathVariable String session) {
 
-        List<ProductEntity> foundProducts = productRepository.findByUser(eUserId, session);
+        List<ProductEntity> foundProducts = productService.findByUser(eUserId, session);
         if (foundProducts.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.USER_HAS_NO_PRODUCTS);
 
@@ -80,13 +79,9 @@ public class ProductController {
     @PostMapping
     public ResponseEntity createProduct(@RequestBody @Valid CreateProductRequest productCreate) {
 
-        final String eUserId = productCreate.getUser().getEUserId();
-        final String userSession = productCreate.getUser().getSession();
-        final String eProductId = productCreate.getEProductId();
-        if (productRepository.findByProductAndUser(eProductId, eUserId, userSession).isPresent())
+        if (productService.findByProductAndUser(productCreate).isPresent())
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);
-
-        productRepository.save(productMapper.toEntity(productCreate));
+        productService.save(productCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(HttpSuccessMessages.PRODUCT_ADDED);
     }
 
@@ -96,13 +91,11 @@ public class ProductController {
         List<ResponseEntity> responseEntityList = new ArrayList<>();
 
         for (CreateProductRequest productCreate : productCreateList) {
-            final String eUserId = productCreate.getUser().getEUserId();
-            final String userSession = productCreate.getUser().getSession();
-            final String eProductId = productCreate.getEProductId();
-            if (productRepository.findByProductAndUser(eProductId, eUserId, userSession).isPresent())
+
+            if (productService.findByProductAndUser(productCreate).isPresent())
                 responseEntityList.add(ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS));
 
-            productRepository.save(productMapper.toEntity(productCreate));
+            productService.save(productCreate);
             responseEntityList.add(ResponseEntity.status(HttpStatus.CREATED).body(HttpSuccessMessages.PRODUCT_ADDED));
         }
 
@@ -149,11 +142,11 @@ public class ProductController {
     @DeleteMapping("{id}")
     public ResponseEntity deleteProductById(@PathVariable String id) {
 
-        Optional<ProductEntity> product = productRepository.findById(id);
+        Optional<ProductEntity> product = productService.findById(id);
         if (!product.isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
 
-        productRepository.deleteById(id);
+        productService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.PRODUCT_DELETED);
     }
 
@@ -171,7 +164,7 @@ public class ProductController {
     @GetMapping("exists/{id}")
     public ResponseEntity productExistsById(@PathVariable String id) {
 
-        if (!productRepository.existsById(id))
+        if (!productService.existsById(id))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(HttpSuccessMessages.PRODUCT_EXISTS);
