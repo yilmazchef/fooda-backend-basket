@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.service.mapper;
+package be.fooda.backend.basket.mapper;
 
 import be.fooda.backend.basket.model.entity.PaymentEntity;
 import be.fooda.backend.basket.model.create.PaymentCreate;

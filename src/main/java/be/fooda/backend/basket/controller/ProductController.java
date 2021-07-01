@@ -5,7 +5,7 @@ import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.http.HttpFailureMessages;
 import be.fooda.backend.basket.model.http.HttpSuccessMessages;
 import be.fooda.backend.basket.model.request.CreateProductRequest;
-import be.fooda.backend.basket.service.mapper.ProductMapper;
+import be.fooda.backend.basket.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
