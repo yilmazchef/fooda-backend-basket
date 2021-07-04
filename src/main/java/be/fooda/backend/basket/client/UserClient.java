@@ -2,6 +2,7 @@ package be.fooda.backend.basket.client;
 
 import be.fooda.backend.basket.model.create.UserCreate;
 import be.fooda.backend.basket.model.entity.UserEntity;
+import be.fooda.backend.basket.model.request.CreateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class UserClient {
 
     private static final String USER_API_URL = "http://192.168.1.31:8041/user/";
 
-    public boolean existByExternalUserId(UserCreate user) {
+    public boolean existByExternalUserId(CreateUserRequest user) {
         return user.getUsername().equalsIgnoreCase("0032467711709");
     }
 

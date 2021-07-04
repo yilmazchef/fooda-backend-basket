@@ -1,6 +1,6 @@
 package be.fooda.backend.basket.client;
 
-import be.fooda.backend.basket.model.create.StoreCreate;
+import be.fooda.backend.basket.model.request.CreateStoreRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class StoreClient {
     private final RestTemplate restClient;
 
-    public boolean exists(StoreCreate store) {
+    public boolean exists(CreateStoreRequest store) {
         return true;
     }
 

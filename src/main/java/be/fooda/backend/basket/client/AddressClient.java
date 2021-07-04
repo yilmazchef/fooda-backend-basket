@@ -1,7 +1,7 @@
 package be.fooda.backend.basket.client;
 
 import be.fooda.backend.basket.model.entity.AddressEntity;
-import be.fooda.backend.basket.model.create.AddressCreate;
+import be.fooda.backend.basket.model.request.CreateAddressRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class AddressClient {
         return addresses;
     }
 
-    public boolean exists(AddressCreate billingAddress) {
+    public boolean exists(CreateAddressRequest billingAddress) {
         return true;
     }
 

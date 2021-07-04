@@ -1,6 +1,6 @@
 package be.fooda.backend.basket.client;
 
-import be.fooda.backend.basket.model.create.IngredientCreate;
+import be.fooda.backend.basket.model.request.CreateIngredientRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class ProductClient {
         return true;
     }
 
-    public boolean ingredientsExist (Set<IngredientCreate> ingredients){
+    public boolean ingredientsExist (Set<CreateIngredientRequest> ingredients){
         return true;
     }
 }
