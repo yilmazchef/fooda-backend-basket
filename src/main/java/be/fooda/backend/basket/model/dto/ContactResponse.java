@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.model.request;
+package be.fooda.backend.basket.model.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,14 +10,17 @@ import lombok.extern.jackson.Jacksonized;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateAddressRequest {
+public class ContactResponse {
 
     String id;
-    CreateUserRequest user;
-    String eAddressId;
+    UserResponse user;
+    String eContactId;
     String title;
-    String postcode;
-    String municipality;
+    String familyName;
+    String firstName;
+    String companyName;
+    String phone;
+    String email;
     Boolean isDelivery;
     Boolean isBilling;
 }

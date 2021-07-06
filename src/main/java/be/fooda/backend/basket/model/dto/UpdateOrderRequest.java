@@ -1,8 +1,11 @@
-package be.fooda.backend.basket.model.response;
+package be.fooda.backend.basket.model.dto;
 
+import be.fooda.backend.basket.model.entity.StoreEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
+
+import java.time.LocalTime;
 
 @Jacksonized
 @Getter
@@ -10,17 +13,11 @@ import lombok.extern.jackson.Jacksonized;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ContactResponse {
+public class UpdateOrderRequest {
 
     String id;
-    UserResponse user;
-    String eContactId;
-    String title;
-    String familyName;
-    String firstName;
-    String companyName;
-    String phone;
-    String email;
-    Boolean isDelivery;
-    Boolean isBilling;
+    CreateUserRequest user;
+    StoreEntity store;
+    LocalTime requiredTime;
+    String note;
 }

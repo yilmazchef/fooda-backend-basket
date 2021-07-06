@@ -1,8 +1,7 @@
 package be.fooda.backend.basket.client;
 
-import be.fooda.backend.basket.model.create.UserCreate;
 import be.fooda.backend.basket.model.entity.UserEntity;
-import be.fooda.backend.basket.model.request.CreateUserRequest;
+import be.fooda.backend.basket.model.dto.CreateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

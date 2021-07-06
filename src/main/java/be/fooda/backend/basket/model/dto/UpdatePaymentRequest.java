@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.model.request;
+package be.fooda.backend.basket.model.dto;
 
 import be.fooda.backend.basket.model.entity.PaymentMethodEntity;
 import be.fooda.backend.basket.model.entity.PaymentStatusEntity;

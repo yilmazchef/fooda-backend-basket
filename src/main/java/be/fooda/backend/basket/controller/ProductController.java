@@ -3,7 +3,7 @@ package be.fooda.backend.basket.controller;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.http.HttpFailureMessages;
 import be.fooda.backend.basket.model.http.HttpSuccessMessages;
-import be.fooda.backend.basket.model.request.CreateProductRequest;
+import be.fooda.backend.basket.model.dto.CreateProductRequest;
 import be.fooda.backend.basket.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

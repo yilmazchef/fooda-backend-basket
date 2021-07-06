@@ -1,10 +1,8 @@
-package be.fooda.backend.basket.model.request;
+package be.fooda.backend.basket.model.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
-
-import java.math.BigDecimal;
 
 @Jacksonized
 @Getter
@@ -12,11 +10,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreatePaymentRequest {
+public class CreateAddressRequest {
 
-     String id;
-     CreateUserRequest user;
-     PaymentMethodEntity method;
-     BigDecimal amount;
-     PaymentStatusEntity status;
+    String id;
+    CreateUserRequest user;
+    String eAddressId;
+    String title;
+    String postcode;
+    String municipality;
+    Boolean isDelivery;
+    Boolean isBilling;
 }

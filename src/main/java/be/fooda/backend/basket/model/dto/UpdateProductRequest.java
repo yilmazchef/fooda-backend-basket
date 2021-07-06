@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.model.response;
+package be.fooda.backend.basket.model.dto;
 
 import be.fooda.backend.basket.model.entity.StoreEntity;
 import lombok.*;
@@ -15,16 +15,16 @@ import java.util.Set;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class UpdateProductRequest {
 
      String id;
      String eProductId;
-     UserResponse user;
+     CreateUserRequest user;
      StoreEntity store;
      String name;
      String imageUrl;
      BigDecimal price;
      String description;
      Integer quantity;
-     Set<IngredientResponse> ingredients = new HashSet<>();
+     Set<CreateIngredientRequest> ingredients = new HashSet<>();
 }

@@ -1,8 +1,8 @@
 package be.fooda.backend.basket.mapper;
 
 import be.fooda.backend.basket.model.entity.AddressEntity;
-import be.fooda.backend.basket.model.request.CreateAddressRequest;
-import be.fooda.backend.basket.model.request.UpdateAddressRequest;
+import be.fooda.backend.basket.model.dto.CreateAddressRequest;
+import be.fooda.backend.basket.model.dto.UpdateAddressRequest;
 import org.mapstruct.*;
 
 @Mapper(

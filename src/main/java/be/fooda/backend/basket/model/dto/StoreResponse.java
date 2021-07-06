@@ -1,7 +1,6 @@
-package be.fooda.backend.basket.model.request;
+package be.fooda.backend.basket.model.dto;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
 @Jacksonized
@@ -9,7 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class CreateStoreRequest {
+public class StoreResponse {
 
     String id;
     String eStoreId;

@@ -1,5 +1,7 @@
-package be.fooda.backend.basket.model.response;
+package be.fooda.backend.basket.model.dto;
 
+import be.fooda.backend.basket.model.entity.PaymentMethodEntity;
+import be.fooda.backend.basket.model.entity.PaymentStatusEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
@@ -12,10 +14,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentResponse {
+public class CreatePaymentRequest {
 
      String id;
-     UserResponse user;
+     CreateUserRequest user;
      PaymentMethodEntity method;
      BigDecimal amount;
      PaymentStatusEntity status;

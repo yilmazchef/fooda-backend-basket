@@ -1,10 +1,9 @@
 package be.fooda.backend.basket.mapper;
 
 import be.fooda.backend.basket.model.entity.PaymentEntity;
-import be.fooda.backend.basket.model.create.PaymentCreate;
-import be.fooda.backend.basket.model.request.CreatePaymentRequest;
-import be.fooda.backend.basket.model.request.UpdatePaymentRequest;
-import be.fooda.backend.basket.model.update.PaymentUpdate;
+import be.fooda.backend.basket.model.dto.CreatePaymentRequest;
+import be.fooda.backend.basket.model.dto.UpdatePaymentRequest;
+
 import org.mapstruct.*;
 
 @Mapper(

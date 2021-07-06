@@ -1,7 +1,7 @@
 package be.fooda.backend.basket.client;
 
 import be.fooda.backend.basket.model.entity.AddressEntity;
-import be.fooda.backend.basket.model.request.CreateAddressRequest;
+import be.fooda.backend.basket.model.dto.CreateAddressRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

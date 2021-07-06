@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.model.response;
+package be.fooda.backend.basket.model.dto;
 
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
@@ -8,7 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class StoreResponse {
+public class UpdateStoreRequest {
 
     String id;
     String eStoreId;

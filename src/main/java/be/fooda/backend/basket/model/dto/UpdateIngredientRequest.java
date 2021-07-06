@@ -1,11 +1,11 @@
-package be.fooda.backend.basket.model.request;
+package be.fooda.backend.basket.model.dto;
 
-import be.fooda.backend.basket.model.entity.StoreEntity;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalTime;
+import java.math.BigDecimal;
 
 @Jacksonized
 @Getter
@@ -13,11 +13,9 @@ import java.time.LocalTime;
 @NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateOrderRequest {
+public class UpdateIngredientRequest {
 
     String id;
-    CreateUserRequest user;
-    StoreEntity store;
-    LocalTime requiredTime;
-    String note;
+    String eIngredientId;
+    BigDecimal cost;
 }

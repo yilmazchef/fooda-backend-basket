@@ -1,6 +1,6 @@
 package be.fooda.backend.basket.client;
 
-import be.fooda.backend.basket.model.request.CreateStoreRequest;
+import be.fooda.backend.basket.model.dto.CreateStoreRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

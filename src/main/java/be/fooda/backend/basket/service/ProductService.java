@@ -3,7 +3,7 @@ package be.fooda.backend.basket.service;
 import be.fooda.backend.basket.dao.ProductRepository;
 import be.fooda.backend.basket.mapper.ProductMapper;
 import be.fooda.backend.basket.model.entity.ProductEntity;
-import be.fooda.backend.basket.model.request.CreateProductRequest;
+import be.fooda.backend.basket.model.dto.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
