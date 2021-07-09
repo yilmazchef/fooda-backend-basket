@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.client;
+package be.fooda.backend.basket.view.client;
 
 import be.fooda.backend.basket.model.dto.CreateIngredientRequest;
 import lombok.RequiredArgsConstructor;

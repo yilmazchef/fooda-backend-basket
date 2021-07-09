@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.service;
+package be.fooda.backend.basket.service.flow;
 
 import be.fooda.backend.basket.dao.ContactRepository;
 import be.fooda.backend.basket.model.entity.ContactEntity;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ContactService {
+public class ContactFlow {
 
     private final ContactRepository contactRepository;
 

@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.service;
+package be.fooda.backend.basket.service.flow;
 
 import be.fooda.backend.basket.dao.PaymentRepository;
 import be.fooda.backend.basket.model.entity.PaymentEntity;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+public class PaymentFlow {
 
     private final PaymentRepository paymentRepository;
 

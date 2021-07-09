@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.service;
+package be.fooda.backend.basket.service.flow;
 
 import be.fooda.backend.basket.dao.OrderRepository;
 import be.fooda.backend.basket.model.entity.OrderEntity;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderFlow {
 
     private final OrderRepository orderRepository;
 

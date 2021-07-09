@@ -21,4 +21,6 @@ public interface ProductRepository extends MongoRepository<ProductEntity, String
     @Query("{'eProductId' : ?0}, 'user.eUserId' : ?1, 'user.session' : ?2}")
     Optional<ProductEntity> findByProductAndUser(String eProductId, String eUserId, String session);
 
+    boolean existsByNameAndStore_EStoreId(String name, String eStoreId);
+
 }

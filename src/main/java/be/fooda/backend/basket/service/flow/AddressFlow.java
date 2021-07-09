@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.service;
+package be.fooda.backend.basket.service.flow;
 
 import be.fooda.backend.basket.dao.AddressRepository;
 import be.fooda.backend.basket.model.entity.AddressEntity;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AddressService {
+public class AddressFlow {
 
     private final AddressRepository addressRepository;
 

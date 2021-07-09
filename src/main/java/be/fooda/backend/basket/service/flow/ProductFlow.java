@@ -1,18 +1,21 @@
-package be.fooda.backend.basket.service;
+package be.fooda.backend.basket.service.flow;
 
 import be.fooda.backend.basket.dao.ProductRepository;
-import be.fooda.backend.basket.mapper.ProductMapper;
+import be.fooda.backend.basket.model.dto.ProductResponse;
+import be.fooda.backend.basket.service.exception.ResourceNotFoundException;
+import be.fooda.backend.basket.service.mapper.ProductMapper;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.dto.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductFlow {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -26,9 +29,20 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ProductEntity save(CreateProductRequest productCreate){
+    public ProductResponse createProduct(CreateProductRequest request){
 
-        return productRepository.save(productMapper.toEntity(productCreate));
+        if(Objects.isNull(request)){
+            throw new NullPointerException("There is no request in the body");
+        }
+
+        boolean exists = productRepository.existsByNameAndStore_EStoreId(request.getName(), request.getStore().getEStoreId());
+
+        if(exists){
+            throw new ResourceNotFoundException("Product NOT found");
+        }
+        ProductEntity entity = productRepository.save(productMapper.toEntity(request));
+
+        return productMapper.toResponse(entity);
     }
     public List<ProductEntity> findByUser(String eUserId){
         return productRepository.findByUser(eUserId);

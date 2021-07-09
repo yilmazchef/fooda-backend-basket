@@ -1,4 +1,4 @@
-package be.fooda.backend.basket.mapper;
+package be.fooda.backend.basket.service.mapper;
 
 import be.fooda.backend.basket.model.entity.ContactEntity;
 import be.fooda.backend.basket.model.dto.CreateContactRequest;

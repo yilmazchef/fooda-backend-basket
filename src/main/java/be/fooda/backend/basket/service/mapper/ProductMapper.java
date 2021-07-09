@@ -1,5 +1,6 @@
-package be.fooda.backend.basket.mapper;
+package be.fooda.backend.basket.service.mapper;
 
+import be.fooda.backend.basket.model.dto.ProductResponse;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.dto.CreateProductRequest;
 import be.fooda.backend.basket.model.dto.UpdateProductRequest;
@@ -22,4 +23,6 @@ public interface ProductMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     UpdateProductRequest toUpdate(ProductEntity from, @MappingTarget UpdateProductRequest to);
+
+    ProductResponse toResponse(ProductEntity entity);
 }
