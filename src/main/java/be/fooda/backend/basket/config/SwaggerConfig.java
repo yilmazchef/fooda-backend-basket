@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-//@Configuration
-//@EnableSwagger2
+/*@Configuration
+@EnableSwagger2*/
 public class SwaggerConfig {
     private static final String BASIC_AUTH = "basicAuth";
     private static final String BEARER_AUTH = "Bearer";
 
-   // @Bean
+    //@Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
