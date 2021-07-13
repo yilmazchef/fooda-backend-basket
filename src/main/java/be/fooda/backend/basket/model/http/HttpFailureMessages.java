@@ -38,6 +38,7 @@ public enum HttpFailureMessages {
     USER_HAS_NO_PAYMENT("Given user does not have any payment"),
     USER_HAS_NO_ORDERS("Given user has no orders in basket"),
     USER_HAS_NO_ORDER_FROM_THIS_STORE("Given user has no order from given store"),
+    FAILED_TO_CREATE_PRODUCT("There has been a problem while creating the PRODUCT"),
     ORDER_COULD_NOT_BE_DELETED("Given order coul not be deleted");
 
     private final String description;

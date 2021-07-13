@@ -1,5 +1,6 @@
 package be.fooda.backend.basket.view.controller;
 
+import be.fooda.backend.basket.model.dto.ProductResponse;
 import be.fooda.backend.basket.model.entity.ProductEntity;
 import be.fooda.backend.basket.model.http.HttpFailureMessages;
 import be.fooda.backend.basket.model.http.HttpSuccessMessages;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/product")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/basket/product")
+@RequiredArgsConstructor
 public class ProductController {
 
     // Product DI ..
@@ -38,9 +39,11 @@ public class ProductController {
     @GetMapping("{id}")
     public ResponseEntity getById(@PathVariable String id) {
 
-        final Optional<ProductEntity> foundProduct = productFlow.findById(id);
+        /*final Optional<ProductEntity> foundProduct = productFlow.findById(id);
         if (!foundProduct.isPresent())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);*/
+
+        ProductResponse foundProduct = productFlow.findById(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(foundProduct);
     }
@@ -79,8 +82,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity createProduct(@RequestBody @Valid CreateProductRequest productCreate) {
 
-        if (productFlow.findByProductAndUser(productCreate).isPresent())
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);
+        //if (productFlow.findByProductAndUser(productCreate).isPresent())
+          //  return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);
         productFlow.createProduct(productCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(HttpSuccessMessages.PRODUCT_ADDED);
     }
@@ -142,9 +145,10 @@ public class ProductController {
     @DeleteMapping("{id}")
     public ResponseEntity deleteProductById(@PathVariable String id) {
 
-        Optional<ProductEntity> product = productFlow.findById(id);
+        /*
+        Optional<ProductEntity> product = productRepository.findById(id);
         if (!product.isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpFailureMessages.PRODUCT_DOES_NOT_EXIST_IN_BASKET);*/
 
         productFlow.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(HttpSuccessMessages.PRODUCT_DELETED);

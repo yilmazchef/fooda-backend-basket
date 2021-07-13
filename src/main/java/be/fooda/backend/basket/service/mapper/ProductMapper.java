@@ -7,6 +7,8 @@ import be.fooda.backend.basket.model.dto.UpdateProductRequest;
 
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
@@ -25,4 +27,6 @@ public interface ProductMapper {
     UpdateProductRequest toUpdate(ProductEntity from, @MappingTarget UpdateProductRequest to);
 
     ProductResponse toResponse(ProductEntity entity);
+
+    List<ProductResponse> toResponses(List<ProductEntity> sourceList);
 }
