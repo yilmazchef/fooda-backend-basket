@@ -80,7 +80,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody @Valid CreateProductRequest productCreate) {
+    public ResponseEntity addProductToBasket(@RequestBody @Valid CreateProductRequest productCreate) {
+
+        // Rest client
 
         //if (productFlow.findByProductAndUser(productCreate).isPresent())
           //  return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpFailureMessages.PRODUCT_ALREADY_EXISTS);

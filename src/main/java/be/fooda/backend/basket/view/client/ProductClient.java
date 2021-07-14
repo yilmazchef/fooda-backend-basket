@@ -8,22 +8,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.UUID;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class ProductClient {
     private final RestTemplate restClient;
 
-    public BigDecimal getCurrentPrice(Long externalProductId) {
+   private Boolean existById(UUID id){
 
-        return new BigDecimal(10);
-    }
-
-    public boolean exists(Long externalProductId) {
-        return true;
-    }
-
-    public boolean ingredientsExist (Set<CreateIngredientRequest> ingredients){
-        return true;
-    }
+       // restClient
+       return true;
+   }
 }
